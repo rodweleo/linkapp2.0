@@ -22,7 +22,7 @@ export const LoginForm = () => {
             required
           />
         </div>
-        <Divider height={2.5} />
+        <Divider height={5} />
         <React.Fragment>
           <div className="bg-white p-2 flex gap-1 items-center rounded-md">
             <i className="fa-solid fa-lock"></i>

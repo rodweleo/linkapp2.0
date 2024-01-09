@@ -1,21 +1,26 @@
-import { useEffect, useState } from "react";
 import "./App.css";
 import { LoginScreen } from "./screens/login_screen/login_screen";
-import { getCookie } from "./functions/getCookie";
 import { LinkApp } from "./screens/linkapp/link_app";
+import { UserContext } from "./hooks/contexts/user_context";
+import { useAuth } from "./hooks/useAuth";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const { user } = useAuth();
+  const [isAuthenticated, setAuthenticated] = useState(false);
   useEffect(() => {
-    const accessToken = getCookie("linkapp_access_token");
-
-    if (accessToken !== null) {
-      setLoggedIn(true);
+    if (user) {
+      setAuthenticated(true);
+    } else {
+      setAuthenticated(false);
     }
-  }, []);
-
-  if (isLoggedIn) {
-    return <LinkApp />;
+  }, [isAuthenticated]);
+  if (isAuthenticated) {
+    return (
+      <UserContext.Provider value={user}>
+        <LinkApp />
+      </UserContext.Provider>
+    );
   } else {
     return <LoginScreen />;
   }
