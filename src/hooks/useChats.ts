@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useAuth } from "./useAuth";
 
@@ -10,12 +10,13 @@ export const useChats = () => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        // Assuming your user object has an 'id' property
-        const userId = user?.uid;
-
         // Fetch the user's chats from the database
-        const userChatsCollection = collection(db, `users/${userId}/chats`);
-        const querySnapshot = await getDocs(userChatsCollection);
+        const chatsRef = collection(db, "chats");
+        const q = query(
+          chatsRef,
+          where("participants", "array-contains", user?.email)
+        );
+        const querySnapshot = await getDocs(q);
 
         // Convert the query snapshot to an array of chats
         const fetchedChats: any = querySnapshot.docs.map((doc) => ({

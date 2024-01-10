@@ -4,8 +4,10 @@ import { auth } from "../../../firebase/firebase";
 import { setCookie } from "../../../functions/setCookie";
 import { useState } from "react";
 import { SpinnerLoader } from "../loaders/spinner";
+import { useNavigate } from "react-router-dom";
 
 export const SignInWithGoogle = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   function signInWithGoogle() {
@@ -14,6 +16,7 @@ export const SignInWithGoogle = () => {
       .then((result) => {
         setCookie("linkapp_access_token", result.user.refreshToken, 7);
         setLoading(false);
+        navigate("/");
       })
       .catch((error) => {
         console.error(error);

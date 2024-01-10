@@ -16,7 +16,7 @@ export const ChatMessages = () => {
   }, [chatContext]);
 
   return (
-    <section className="w-full relative p-2.5 flex flex-col gap-2">
+    <section className="w-full flex flex-col gap-2 h-auto">
       {messages.map((message) => (
         <ChatBubble message={message} />
       ))}

@@ -1,9 +1,10 @@
-export function getCookie(name: string) {
+export function getCookie() {
+  const accessToken = "link_access_token";
   const cookies = document.cookie.split(";");
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i].trim();
-    if (cookie.startsWith(`${name}=`)) {
-      return decodeURIComponent(cookie.substring(name.length + 1));
+    if (cookie.startsWith(`${accessToken}=`)) {
+      return decodeURIComponent(cookie.substring(accessToken.length + 1));
     }
   }
   return null;

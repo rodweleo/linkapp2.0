@@ -1,21 +1,27 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Avatar } from "../avatar";
 import { UserController } from "../../../controllers/user_controller";
 import { ChatListItemSkeleton } from "./chat_list_skeleton";
 import { formatDate } from "../../../functions/formatDate";
+import { UserContext } from "../../../hooks/contexts/user_context";
 
 export const ChatListItem = ({ chat, updateOpenedChat }) => {
+  const userContext = useContext(UserContext);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  //get the user details using the chat sender Id
-  const { senderId } = chat;
   useEffect(() => {
     //fetch the user
-    new UserController().fetchUserDetails(senderId).then((response) => {
-      setUser(response);
-      setLoading(false);
-    });
+    new UserController()
+      .fetchUserDetails(
+        chat.participants.filter(
+          (participant: string) => participant !== userContext.email
+        )[0]
+      )
+      .then((response) => {
+        setUser(response);
+        setLoading(false);
+      });
   }, []);
 
   function updateChatContext() {

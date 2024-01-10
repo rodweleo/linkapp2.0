@@ -41,11 +41,17 @@ nav a.active {
   animation: l13 1s infinite linear;
 }
 
-.outgoing-message {
+.incoming-message {
+  display: flex;
+  border-radius: 50px;
+  justify-content: start;
 }
 
-.incoming-message {
+.outgoing-message {
+  display: flex;
+  justify-content: end;
 }
+
 @keyframes l13 {
   100% {
     transform: rotate(1turn);

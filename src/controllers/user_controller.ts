@@ -9,12 +9,14 @@ import {
 import { db } from "../firebase/firebase";
 
 export class UserController {
-  async fetchUserDetails(userId: string) {
+  async fetchUserDetails(email: string) {
     try {
-      const userDocRef = doc(db, "users", userId);
-      const userDocSnapshot = await getDoc(userDocRef);
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
+      const usersRef = collection(db, "users");
+      const userDocSnapshot = query(usersRef, where("email", "==", email));
+      const querySnapshot = await getDocs(userDocSnapshot);
+      if (!querySnapshot.empty) {
+        // Assuming there's only one user with a given username
+        const userData = querySnapshot.docs[0].data();
         return userData;
       } else {
         return "User not found";

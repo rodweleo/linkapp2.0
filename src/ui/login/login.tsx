@@ -31,6 +31,7 @@ export const LoginForm = () => {
               placeholder="Password"
               className="border-none outline-none bg-transparent"
               required
+              autoComplete="false"
             />
           </div>
           <p className="flex justify-end font-light text-sm ">

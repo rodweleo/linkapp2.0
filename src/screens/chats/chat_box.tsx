@@ -4,15 +4,24 @@ import { MessagesApi } from "../../controllers/message_controller";
 import { UserController } from "../../controllers/user_controller";
 import { ChatContext } from "../../hooks/contexts/chat_context";
 import { ChatMessages } from "./chat_messages";
+import { UserContext } from "../../hooks/contexts/user_context";
+import { Message } from "../../models/Message";
+import { Timestamp } from "firebase/firestore";
 
 export const ChatBox = () => {
   const chatContext = useContext(ChatContext);
+  const userContext = useContext(UserContext);
   const [partyB, setPartyB] = useState(null);
   const [message, setMessage] = useState("");
+
   useEffect(() => {
     try {
       new UserController()
-        .fetchUserDetails(chatContext.senderId)
+        .fetchUserDetails(
+          chatContext.participants.filter(
+            (participant: string) => participant !== userContext.email
+          )[0]
+        )
         .then((response) => {
           setPartyB(response);
         })
@@ -24,24 +33,39 @@ export const ChatBox = () => {
     }
   }, [chatContext]);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (message === "") {
       return;
     }
-    const _messageApi = new MessagesApi();
-    _messageApi.sendMessage(chatContext.uId, receiverId, message);
+
+    const newMessage = new Message({
+      sender: userContext.email,
+      body: message,
+      receiver: partyB.email, // Replace with the actual receiver's email
+      createdAt: Timestamp.now(),
+      chatId: chatContext.id, // Replace with the actual chat ID
+      isDelivered: false,
+      isRead: false,
+    });
+
+    const response = await new MessagesApi().sendMessage(newMessage);
+    if (response === "") {
+      return;
+    }
+
+    setMessage("");
   }
   return (
-    <section className="h-full w-full bg-slate-200 rounded-md relative flex flex-col items-center">
-      <section className="w-full">
+    <section className="h-screen w-full bg-slate-200 rounded-md flex flex-col items-center justify-between gap-1">
+      <section className="w-full px-2.5 overflow-y-scroll h-screen mb-2">
         <h2 className="font-bold text-xl">{partyB?.name}</h2>
         <ChatMessages />
       </section>
       <form
-        className="px-2 flex gap-2.5 items-center justify-between border border-slate-300 w-full bg-white absolute bottom-0"
+        className="px-2 flex gap-2.5 items-center justify-between border border-slate-300 w-full bg-white sticky bottom-0"
         onSubmit={(e) => handleSubmit(e)}>
-        <div className="flex gap-2.5 items-center w-full">
+        <div className="flex gap-2.5 items-center ">
           <i className="fa-solid fa-camera"></i>
           <input
             type="text"
