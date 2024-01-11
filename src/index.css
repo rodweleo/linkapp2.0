@@ -44,12 +44,12 @@ nav a.active {
 .incoming-message {
   display: flex;
   border-radius: 50px;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .outgoing-message {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 @keyframes l13 {

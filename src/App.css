@@ -1,0 +1,13 @@
+.attachment-list {
+  padding: none;
+  width: 100%;
+}
+.attachment-list-item {
+  cursor: pointer;
+  padding: 5px;
+}
+
+.attachment-list-item:hover {
+  background: grey;
+  color: white;
+}

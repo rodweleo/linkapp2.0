@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { UserContext } from "../../../hooks/contexts/user_context";
 import { Avatar } from "../avatar";
+import { SignOut } from "../buttons/sign_out";
 
 export const MainNavigation = () => {
   const userContext = useContext(UserContext);
@@ -43,9 +44,14 @@ export const MainNavigation = () => {
         <li></li>
       </ul>
 
-      <NavLink to="settings" className="flex items-center justify-center pb-5">
-        <i className="fa-solid fa-gear"></i>
-      </NavLink>
+      <ul className="flex flex-col">
+        <NavLink
+          to="settings"
+          className="flex items-center justify-center pb-5">
+          <i className="fa-solid fa-gear"></i>
+        </NavLink>
+        <SignOut />
+      </ul>
     </nav>
   );
 };

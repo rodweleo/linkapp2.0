@@ -9,7 +9,9 @@ function App() {
   const navigate = useNavigate();
   useEffect(() => {
     const access_token = getCookie();
-    if (access_token === null) {
+    if (access_token) {
+      navigate("/");
+    } else {
       navigate("/login");
     }
   }, []);
