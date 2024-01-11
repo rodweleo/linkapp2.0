@@ -1,6 +1,6 @@
 interface attachmentTypes {
   attachment: File;
-  updateAttachment: (attachment: File) => {};
+  updateAttachment: any;
 }
 
 export const Attachment = ({

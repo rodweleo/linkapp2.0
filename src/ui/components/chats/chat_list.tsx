@@ -1,4 +1,3 @@
-import { Routes, Route } from "react-router-dom";
 import { ChatContext } from "../../../hooks/contexts/chat_context";
 import { useChats } from "../../../hooks/useChats";
 import { ChatBox } from "../../../screens/chats/chat_box";
@@ -6,7 +5,7 @@ import { ChatListItem } from "./chat_list_item";
 import { useState } from "react";
 
 export const ChatList = () => {
-  const [openedChat, setOpenedChat] = useState("");
+  const [openedChat, setOpenedChat] = useState<any>("");
   const chats = useChats();
 
   return (

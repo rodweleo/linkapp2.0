@@ -1,8 +1,11 @@
 import { useContext } from "react";
 import { UserContext } from "../../../hooks/contexts/user_context";
 
-export const ChatBubble = ({ message }) => {
-  const userContext = useContext(UserContext);
+interface MessageTypes {
+  message: any;
+}
+export const ChatBubble = ({ message }: MessageTypes) => {
+  const userContext = useContext<any>(UserContext);
 
   return (
     <div

@@ -12,7 +12,7 @@ import { UserContext } from "../../hooks/contexts/user_context";
 import { getCookie } from "../../functions/getCookie";
 
 export const LinkApp = () => {
-  const { user } = useAuth();
+  const { user }: any = useAuth();
 
   useEffect(() => {
     const access_token = getCookie();

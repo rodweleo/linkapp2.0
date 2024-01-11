@@ -5,9 +5,13 @@ import { ChatListItemSkeleton } from "./chat_list_skeleton";
 import { formatDate } from "../../../functions/formatDate";
 import { UserContext } from "../../../hooks/contexts/user_context";
 
-export const ChatListItem = ({ chat, updateOpenedChat }) => {
-  const userContext = useContext(UserContext);
-  const [user, setUser] = useState(null);
+interface ChatType {
+  chat: any;
+  updateOpenedChat: any;
+}
+export const ChatListItem = ({ chat, updateOpenedChat }: ChatType) => {
+  const userContext = useContext<any>(UserContext);
+  const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

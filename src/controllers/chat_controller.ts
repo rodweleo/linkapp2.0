@@ -20,7 +20,7 @@ export class ChatController {
       const unsubscribe = onSnapshot(
         query(messagesRef, orderBy("createdAt", "asc")),
         (querySnapshot) => {
-          const messages = [];
+          const messages: any = [];
           querySnapshot.forEach((doc) => {
             // Handle each document here
             messages.push(doc.data());
@@ -38,7 +38,7 @@ export class ChatController {
     }
   }
 
-  async fetchUserChats(email: string, onChatsReceived) {
+  async fetchUserChats(email: string, onChatsReceived: any) {
     try {
       const chatsRef = collection(db, "chats");
 
@@ -51,8 +51,8 @@ export class ChatController {
       });
 
       // Using onSnapshot to get real-time updates
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const chats = [];
+      const unsubscribe: any = onSnapshot(q, (querySnapshot) => {
+        const chats: any = [];
         querySnapshot.forEach((doc) => {
           // Handle each document here
           chats.push(doc.data());

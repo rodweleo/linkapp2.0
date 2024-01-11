@@ -10,9 +10,9 @@ import { Timestamp } from "firebase/firestore";
 import { Attachment } from "../../ui/components/chats/attachment";
 
 export const ChatBox = () => {
-  const chatContext = useContext(ChatContext);
-  const userContext = useContext(UserContext);
-  const [partyB, setPartyB] = useState(null);
+  const chatContext = useContext<any>(ChatContext);
+  const userContext = useContext<any>(UserContext);
+  const [partyB, setPartyB] = useState<any>(null);
   const [message, setMessage] = useState("");
   const [chooseAttachment, setChooseAttachment] = useState(false);
   const [attachments, setAttachments] = useState<File[]>([]);
@@ -21,11 +21,11 @@ export const ChatBox = () => {
     try {
       new UserController()
         .fetchUserDetails(
-          chatContext.participants.filter(
+          chatContext?.participants?.filter(
             (participant: string) => participant !== userContext.email
           )[0]
         )
-        .then((response) => {
+        .then((response: any) => {
           setPartyB(response);
         })
         .catch((error) => {
@@ -88,20 +88,22 @@ export const ChatBox = () => {
 
       // Handle the selected file (you can add an event listener for 'change' event)
       input.addEventListener("change", () => {
-        const selectedFile = input.files[0];
-        if (selectedFile) {
-          // Check whether the selected file already exists in the attachments array
-          const fileExists = attachments.some(
-            (attachment) => attachment.name === selectedFile.name
-          );
+        if (input.files) {
+          const selectedFile = input.files[0];
+          if (selectedFile) {
+            // Check whether the selected file already exists in the attachments array
+            const fileExists = attachments.some(
+              (attachment) => attachment.name === selectedFile.name
+            );
 
-          if (!fileExists) {
-            setAttachments((prevAttachments) => [
-              ...prevAttachments,
-              selectedFile,
-            ]);
-          } else {
-            console.log("File Already Selected. Try another one.");
+            if (!fileExists) {
+              setAttachments((prevAttachments) => [
+                ...prevAttachments,
+                selectedFile,
+              ]);
+            } else {
+              console.log("File Already Selected. Try another one.");
+            }
           }
         }
       });
