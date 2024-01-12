@@ -8,39 +8,48 @@ import { UserContext } from "../../hooks/contexts/user_context";
 import { Message } from "../../models/Message";
 import { Timestamp } from "firebase/firestore";
 import { Attachment } from "../../ui/components/chats/attachment";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { storage } from "../../firebase/storage/firebase_storage_ref";
+import { ChatHeader } from "../../ui/components/chats/chat_header";
+import { useRef } from "react";
 
 export const ChatBox = () => {
   const chatContext = useContext<any>(ChatContext);
   const userContext = useContext<any>(UserContext);
+  const videoRef = useRef(null);
+
+  const [videoStream, setVideoStreem] = useState<MediaStream>();
   const [partyB, setPartyB] = useState<any>(null);
   const [message, setMessage] = useState("");
   const [chooseAttachment, setChooseAttachment] = useState(false);
   const [attachments, setAttachments] = useState<File[]>([]);
-
+  const [activeCall, setActiveCall] = useState(false);
   useEffect(() => {
-    try {
-      new UserController()
-        .fetchUserDetails(
-          chatContext?.participants?.filter(
-            (participant: string) => participant !== userContext.email
-          )[0]
-        )
-        .then((response: any) => {
-          setPartyB(response);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    } catch (error) {
-      console.error(error);
+    if (chatContext) {
+      try {
+        new UserController()
+          .fetchUserDetails(
+            chatContext.participants?.filter(
+              (participant: string) => participant !== userContext.email
+            )[0]
+          )
+          .then((response: any) => {
+            setPartyB(response);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      } catch (error) {
+        console.error(error);
+      }
     }
   }, [chatContext]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (message === "") {
+    /*if (message === "") {
       return;
-    }
+    }*/
 
     const newMessage = new Message({
       sender: userContext.email,
@@ -50,14 +59,26 @@ export const ChatBox = () => {
       chatId: chatContext.id, // Replace with the actual chat ID
       isDelivered: false,
       isRead: false,
+      hasAttachment: attachments.length > 0 ? true : false,
     });
 
-    const response = await new MessagesApi().sendMessage(newMessage);
+    //create storage reference to this specific active chat
+    const chatRef = ref(storage, `chats/${chatContext.id}`);
+    const fileRef = ref(chatRef, `attachments/${attachments[0]}`);
+    // Upload the file to Firebase Storage
+    const uploadTask = uploadBytes(fileRef, attachments[0]);
+    // Get the download URL after the upload is complete
+    uploadTask.then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((downloadURL) => {
+        console.log("File uploaded successfully. Download URL:", downloadURL);
+      });
+    });
+    /*const response = await new MessagesApi().sendMessage(newMessage);
     if (response === "") {
       return;
     }
 
-    setMessage("");
+    setMessage("");*/
   }
 
   useEffect(() => {
@@ -123,6 +144,14 @@ export const ChatBox = () => {
     }
   }, [chooseAttachment === true]);
 
+  useEffect(() => {
+    if (videoStream !== undefined) {
+      setActiveCall(true);
+      if (videoRef.current) {
+        videoRef.current.srcObject = videoStream;
+      }
+    }
+  }, [videoStream]);
   function deleteAttachment(file: File) {
     //remove the attachment from the array of attachments
 
@@ -132,11 +161,63 @@ export const ChatBox = () => {
     );
     setAttachments(newAttachments);
   }
+
+  function endVideoCall() {
+    setActiveCall(false);
+  }
   return (
-    <section className="h-screen w-full bg-slate-200 rounded-md flex flex-col items-center justify-between gap-1">
-      <section className="w-full px-2.5 overflow-y-scroll h-screen mb-2">
-        <h2 className="font-bold text-xl">{partyB?.name}</h2>
-        <ChatMessages />
+    <section className="h-screen w-full bg-slate-200 rounded-md flex flex-col items-center justify-between gap-1 relative">
+      <section className="w-full  overflow-y-scroll h-screen mb-2">
+        <ChatHeader partyB={partyB} updateVideoStream={setVideoStreem} />
+        {activeCall && (
+          <section className="fixed top-0 left-0 z-10 w-full h-full bg-black bg-opacity-80 p-5 flex flex-col items-center justify-around">
+            <div className="flex items-center justify-around w-full">
+              <div className="relative">
+                <video ref={videoRef} autoPlay className="cursor-pointer" />
+                <h2 className="absolute bottom-0 left-0 bg-slate-400 p-2.5  bg-opacity-70">
+                  {userContext.displayName}
+                </h2>
+              </div>
+              <div className="relative">
+                <video ref={videoRef} autoPlay className=" cursor-pointer" />
+                <h2 className="absolute bottom-0 left-0 bg-slate-400 p-2.5  bg-opacity-70">
+                  {partyB.name}
+                </h2>
+              </div>
+            </div>
+            <div className="flex w-full items-center justify-around bg-gray-800 py-2.5">
+              <ul className=" flex items-center gap-10 p-0">
+                <li>
+                  <i className="fa-solid fa-microphone-slash text-white scale-150 cursor-pointer"></i>
+                </li>
+                <li>
+                  <i className="fa-solid fa-video text-white cursor-pointer scale-150 "></i>
+                </li>
+              </ul>
+
+              <ul className=" flex items-center gap-12 p-0 text-white">
+                <li>
+                  <i className="fa-solid fa-users scale-150"></i>
+                </li>
+                <li>
+                  <i className="fa-regular fa-message scale-150"></i>
+                </li>
+                <li>
+                  <i className="fa-regular fa-face-smile scale-150"></i>
+                </li>
+              </ul>
+              <button
+                className="text-white bg-red-500 px-10 py-2.5 rounded-md w-fit"
+                onClick={() => endVideoCall()}>
+                <i className="fa-solid fa-phone-slash "></i>
+                &nbsp; End Call
+              </button>
+            </div>
+          </section>
+        )}
+        <div className="px-2.5">
+          <ChatMessages />
+        </div>
       </section>
       {chooseAttachment && (
         <section className="fixed top-0 left-0 bg-black bg-opacity-20 w-full h-full z-50 flex items-center justify-center">
@@ -167,15 +248,18 @@ export const ChatBox = () => {
         </section>
       )}
 
-      <section className="w-full flex justify-start gap-2.5 mb-2">
-        {attachments.length > 0 &&
-          attachments.map((attachment) => (
+      {attachments.length > 0 && (
+        <section className="w-full flex justify-start gap-2.5 mb-2">
+          {attachments.map((attachment, index: number) => (
             <Attachment
+              key={index}
               attachment={attachment}
               updateAttachment={deleteAttachment}
             />
           ))}
-      </section>
+        </section>
+      )}
+
       <form
         className="pl-2.5 flex gap-2.5 items-center justify-between border border-slate-300 w-full bg-white sticky bottom-0"
         onSubmit={(e) => handleSubmit(e)}>
@@ -200,10 +284,7 @@ export const ChatBox = () => {
               </span>
             )}
           </div>
-          <button
-            type="submit"
-            disabled={message === ""}
-            className={`${message === "" ? "disabled" : ""} bg-slate-300 `}>
+          <button type="submit">
             <i className="fa-solid fa-paper-plane  p-2.5 cursor-pointer"></i>
           </button>
         </div>

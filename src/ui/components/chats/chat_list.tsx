@@ -24,8 +24,12 @@ export const ChatList = () => {
           </button>
         </div>
         <ul className="mt-1">
-          {chats.map((chat) => (
-            <ChatListItem chat={chat} updateOpenedChat={setOpenedChat} />
+          {chats.map((chat, index: number) => (
+            <ChatListItem
+              key={index}
+              chat={chat}
+              updateOpenedChat={setOpenedChat}
+            />
           ))}
         </ul>
       </section>

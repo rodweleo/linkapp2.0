@@ -3,8 +3,9 @@ import { UserContext } from "../../../hooks/contexts/user_context";
 
 interface MessageTypes {
   message: any;
+  key: number;
 }
-export const ChatBubble = ({ message }: MessageTypes) => {
+export const ChatBubble = ({ message, key }: MessageTypes) => {
   const userContext = useContext<any>(UserContext);
 
   return (
@@ -13,7 +14,8 @@ export const ChatBubble = ({ message }: MessageTypes) => {
         message.sender === userContext.email
           ? "outgoing-message "
           : "incoming-message "
-      }`}>
+      }`}
+      key={key}>
       <div className="bg-white p-2.5 shadow-xl font-medium">
         <p>{message.body}</p>
         <div className="flex justify-end">

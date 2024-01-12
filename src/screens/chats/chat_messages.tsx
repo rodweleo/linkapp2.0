@@ -14,13 +14,13 @@ export const ChatMessages = () => {
       }
     );
 
-    return () => unsubscribe();
+    return () => unsubscribe;
   }, [chatContext]);
 
   return (
     <section className="w-full flex flex-col gap-2 h-auto">
-      {messages.map((message: any) => (
-        <ChatBubble message={message} />
+      {messages.map((message: any, index: number) => (
+        <ChatBubble key={index} message={message} />
       ))}
     </section>
   );

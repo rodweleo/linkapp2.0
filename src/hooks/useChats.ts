@@ -9,25 +9,27 @@ export const useChats = () => {
 
   useEffect(() => {
     const fetchChats = async () => {
-      try {
-        // Fetch the user's chats from the database
-        const chatsRef = collection(db, "chats");
-        const q = query(
-          chatsRef,
-          where("participants", "array-contains", user?.email)
-        );
-        const querySnapshot = await getDocs(q);
+      if (user) {
+        try {
+          // Fetch the user's chats from the database
+          const chatsRef = collection(db, "chats");
+          const q = query(
+            chatsRef,
+            where("participants", "array-contains", user.email)
+          );
+          const querySnapshot = await getDocs(q);
 
-        // Convert the query snapshot to an array of chats
-        const fetchedChats: any = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
+          // Convert the query snapshot to an array of chats
+          const fetchedChats: any = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
 
-        // Update the state with the fetched chats
-        setChats(fetchedChats);
-      } catch (error) {
-        console.error("Error fetching chats:", error);
+          // Update the state with the fetched chats
+          setChats(fetchedChats);
+        } catch (error) {
+          console.error("Error fetching chats:", error);
+        }
       }
     };
 

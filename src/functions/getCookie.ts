@@ -1,5 +1,5 @@
 export function getCookie() {
-  const accessToken = "link_access_token";
+  const accessToken = "linkapp_access_token";
   const cookies = document.cookie.split(";");
   for (let i = 0; i < cookies.length; i++) {
     const cookie = cookies[i].trim();

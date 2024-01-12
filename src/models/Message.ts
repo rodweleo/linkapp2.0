@@ -1,21 +1,21 @@
 import { Timestamp } from "firebase/firestore";
 
 export class Message {
+  chatId: string;
   sender: string;
   body: string;
-  receiver: string;
-  chatId: string;
-  isRead: boolean;
   isDelivered: boolean;
+  isRead: boolean;
   createdAt: Timestamp;
+  hasAttachment: boolean;
   constructor({
     sender,
     body,
-    receiver,
     createdAt,
     chatId,
     isDelivered,
     isRead,
+    hasAttachment,
   }: {
     sender: string;
     body: string;
@@ -24,13 +24,14 @@ export class Message {
     chatId: string;
     isDelivered: boolean;
     isRead: boolean;
+    hasAttachment: boolean;
   }) {
+    this.chatId = chatId;
     this.sender = sender;
     this.body = body;
-    this.receiver = receiver;
     this.createdAt = createdAt;
-    this.chatId = chatId;
     this.isDelivered = isDelivered;
     this.isRead = isRead;
+    this.hasAttachment = hasAttachment;
   }
 }

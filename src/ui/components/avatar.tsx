@@ -3,11 +3,8 @@ interface avatarProps {
 }
 export const Avatar = ({ url }: avatarProps) => {
   return (
-    <img
-      src={url}
-      alt=""
-      srcSet=""
-      className=" object-fill h-14 rounded-full"
-    />
+    <div className="w-12">
+      <img src={url} alt="" srcSet="" className=" object-fill rounded-full" />
+    </div>
   );
 };

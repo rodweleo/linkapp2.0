@@ -6,12 +6,13 @@ import { SignOut } from "../buttons/sign_out";
 
 export const MainNavigation = () => {
   const userContext = useContext<any>(UserContext);
+
   return (
     <nav className="sticky h-screen flex flex-col justify-between items-center bg-gray-900">
       <ul className="flex flex-col items-center gap-5">
         <li>
           <Link to="profile">
-            <Avatar url={userContext!.photoURL} />
+            <Avatar url={userContext?.photoURL} />
           </Link>
         </li>
 
@@ -23,6 +24,12 @@ export const MainNavigation = () => {
         <li>
           <NavLink to="search">
             <i className="fa-solid fa-magnifying-glass"></i>
+          </NavLink>
+        </li>
+
+        <li>
+          <NavLink to="calls">
+            <i className="fa-solid fa-phone"></i>
           </NavLink>
         </li>
 
