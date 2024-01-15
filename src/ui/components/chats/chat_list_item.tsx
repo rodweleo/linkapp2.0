@@ -44,7 +44,9 @@ export const ChatListItem = ({ key, chat, updateOpenedChat }: ChatType) => {
           key={key}
           onClick={() => updateChatContext()}>
           <div className="relative">
-            <Avatar url={user?.photoURL} />
+            <div className="w-12">
+              <Avatar url={user?.photoURL} />
+            </div>
             <i
               className={`fa-solid fa-circle ${
                 user.isOnline ? "text-green-500" : "text-slate-500"
