@@ -7,7 +7,7 @@
   padding: 5px;
 }
 
-.attachment-list-item:hover {
-  background: grey;
+.attachment-list-item:hover > i {
+  background: rgba(0, 0, 255, 0.795);
   color: white;
 }

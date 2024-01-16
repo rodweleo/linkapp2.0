@@ -2,7 +2,7 @@ import { ToggleSwitch } from "../buttons/toggle_switch";
 
 export const ChatSettings = () => {
   return (
-    <ul>
+    <ul className="leading-loose">
       <li className="flex items-center justify-between">
         <strong>Mute notifications</strong>
         <ToggleSwitch />

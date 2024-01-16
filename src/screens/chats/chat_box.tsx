@@ -232,25 +232,35 @@ export const ChatBox = () => {
               <i
                 className="fa-solid fa-x absolute -top-10 -right-10 text-white p-2.5 rounded-full hover:text-red-600 hover:cursor-pointer hover:bg-slate-200"
                 onClick={() => setChooseAttachment(false)}></i>
-              <h1 className="text-center font-bold">Select Attachment</h1>
-              <ul className="rounded-md leading-10 divide-y attachment-list">
-                <li className="flex items-center gap-2.5 attachment-list-item">
-                  <i className="fa-regular fa-file"></i>
+
+              <section className="grid grid-cols-3 grid-rows-2 gap-x-10 rounded-md leading-10 attachment-list">
+                <div className="flex items-center flex-col attachment-list-item">
+                  <i className="fa-solid fa-camera p-4 rounded-full bg-blue-300 text-blue-800"></i>
+                  <span>Camera</span>
+                </div>
+                <div className="flex flex-col items-center attachment-list-item">
+                  <i className="fa-regular fa-image p-4 rounded-full bg-blue-300 text-blue-800"></i>
+                  <span>Gallery</span>
+                </div>
+                <div className="flex items-center flex-col attachment-list-item">
+                  <i className="fa-solid fa-file-lines p-4 rounded-full bg-blue-300 text-blue-800"></i>
                   <span>Document</span>
-                </li>
-                <li className="flex items-center gap-2.5 attachment-list-item">
-                  <i className="fa-regular fa-image"></i>
-                  <span>Image</span>
-                </li>
-                <li className="flex items-center gap-2.5 attachment-list-item">
-                  <i className="fa-regular fa-file-audio"></i>
+                </div>
+
+                <div className="flex items-center flex-col attachment-list-item">
+                  <i className="fa-solid fa-headphones-simple p-4 rounded-full bg-blue-300 text-blue-800"></i>
                   <span>Audio</span>
-                </li>
-                <li className="flex items-center gap-2.5 attachment-list-item">
-                  <i className="fa-solid fa-file-video"></i>
+                </div>
+                <div className="flex items-center flex-col attachment-list-item">
+                  <i className="fa-solid fa-file-video p-4 rounded-full bg-blue-300 text-blue-800"></i>
                   <span>Video</span>
-                </li>
-              </ul>
+                </div>
+
+                <div className="flex items-center flex-col attachment-list-item">
+                  <i className="fa-solid fa-square-poll-vertical p-4 rounded-full bg-blue-300 text-blue-800"></i>
+                  <span>Poll</span>
+                </div>
+              </section>
             </div>
           </section>
         )}

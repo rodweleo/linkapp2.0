@@ -48,6 +48,11 @@ export const MainNavigation = () => {
             <i className="fa-regular fa-message"></i>
           </NavLink>
         </li>
+        <li>
+          <NavLink to="stories">
+            <i className="fa-solid fa-pen-to-square"></i>
+          </NavLink>
+        </li>
         <li></li>
       </ul>
 

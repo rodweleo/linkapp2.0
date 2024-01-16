@@ -9,6 +9,7 @@ import { Settings } from "../settings/settings";
 import { UserContext } from "../../hooks/contexts/user_context";
 import { useAuth } from "../../hooks/useAuth";
 import { Calls } from "../calls/calls";
+import { Stories } from "../stories";
 
 export const LinkApp = () => {
   const { user }: any = useAuth();
@@ -22,6 +23,7 @@ export const LinkApp = () => {
           <Route path="calls" element={<Calls />}></Route>
           <Route path="search" element={<Search />}></Route>
           <Route path="chats/*" element={<Chats />}></Route>
+          <Route path="stories" element={<Stories />}></Route>
           <Route path="contacts" element={<Contacts />}></Route>
           <Route path="notifications" element={<Notifications />}></Route>
           <Route path="settings" element={<Settings />}></Route>

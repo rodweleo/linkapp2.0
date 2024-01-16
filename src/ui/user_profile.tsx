@@ -20,7 +20,7 @@ export const UserProfile = ({ user, onCloseUserProfile }) => {
               <Avatar url={user?.photoURL} />
             </div>
             <h1 className="font-bold text-2xl">{user?.name}</h1>
-            <p>{user?.bio}</p>
+            <p className="text-slate-500">{user?.bio}</p>
           </div>
           <ChatMedia />
           <ChatSettings />
