@@ -38,4 +38,17 @@ export class UserController {
       console.error(error);
     }
   }
+
+  async fetchUserStories(email: string) {
+    try {
+      const storiesRef = collection(db, "stories");
+      const storiesDocSnapshot = query(
+        storiesRef,
+        where("storyTeller", "==", email)
+      );
+    } catch (error) {
+      console.log(error);
+      return "Error fetching stories";
+    }
+  }
 }
